@@ -27,21 +27,16 @@ namespace AvaliandoExpressoesMatematicas
 
         private string CalculateParenthesesPriority(string input)
         {
-            var matches = _regex.Matches(input);
-            foreach (var match in matches.AsEnumerable())
+            var match = _regex.Match(input);
+            if (match.Success)
             {
-                if (match.Success)
-                {
-                    var expressionToCalculate = match.Value.Replace("(", string.Empty).Replace(")", string.Empty);
-                    var result = Calculate(expressionToCalculate);
-                    input = input.Replace(match.Value, result);
-                }
+                var expressionToCalculate = match.Value.Replace("(", string.Empty).Replace(")", string.Empty);
+                var result = Calculate(expressionToCalculate);
+                input = input.Replace(match.Value, result);
             }
 
             if (_regex.Match(input).Success)
-            {
                 input = CalculateParenthesesPriority(input);
-            }
 
             return input;
         }
@@ -114,7 +109,7 @@ namespace AvaliandoExpressoesMatematicas
 
         private static void CalculateValue(string[] splited, Func<decimal, decimal, decimal> calc)
         {
-            if(splited.Any(x=> x == string.Empty))
+            if (splited.Any(x => x == string.Empty))
             {
                 return;
             }
