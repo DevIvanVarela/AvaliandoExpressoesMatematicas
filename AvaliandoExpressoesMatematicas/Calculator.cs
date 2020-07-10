@@ -81,17 +81,17 @@ namespace AvaliandoExpressoesMatematicas
 
         private string Subtract(string input)
         {
-            if (!input.Contains("-") || NegativeNumber(input))
+            var splited = input.Split("-");
+            if (!input.Contains("-") || NegativeNumber(splited))
                 return input;
             
-            var splited = input.Split("-");
             CalculateOperatorPriorities(splited);
             CalculateValue(splited, decimal.Subtract);
 
             return splited[0];
         }
 
-        private bool NegativeNumber(string input) => input.Split("-").AsEnumerable().Any(x => string.IsNullOrWhiteSpace(x));
+        private bool NegativeNumber(string[] splited) => splited.Any(x => string.IsNullOrWhiteSpace(x));
 
         private static void CalculateValue(string[] splited, Func<decimal, decimal, decimal> calc)
         {
