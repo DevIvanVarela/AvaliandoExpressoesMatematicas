@@ -50,9 +50,7 @@ namespace AvaliandoExpressoesMatematicas
             
             var splited = input.Split("/");
             CalculateOperatorPriorities(splited);
-            CalculateValue(splited, decimal.Divide);
-
-            return splited[0];
+            return CalculateValue(splited, decimal.Divide);
         }
 
         private string Multiply(string input)
@@ -62,9 +60,7 @@ namespace AvaliandoExpressoesMatematicas
             
             var splited = input.Split("*");
             CalculateOperatorPriorities(splited);
-            CalculateValue(splited, decimal.Multiply);
-
-            return splited[0];
+            return CalculateValue(splited, decimal.Multiply);
         }
 
         private string Add(string input)
@@ -74,9 +70,7 @@ namespace AvaliandoExpressoesMatematicas
             
             var splited = input.Split("+");
             CalculateOperatorPriorities(splited);
-            CalculateValue(splited, decimal.Add);
-
-            return splited[0];
+            return CalculateValue(splited, decimal.Add);
         }
 
         private string Subtract(string input)
@@ -86,17 +80,18 @@ namespace AvaliandoExpressoesMatematicas
                 return input;
             
             CalculateOperatorPriorities(splited);
-            CalculateValue(splited, decimal.Subtract);
-
-            return splited[0];
+            return CalculateValue(splited, decimal.Subtract);
         }
 
         private bool NegativeNumber(string[] splited) => splited.Any(x => string.IsNullOrWhiteSpace(x));
 
-        private static void CalculateValue(string[] splited, Func<decimal, decimal, decimal> calc)
+
+        private static string CalculateValue(string[] splited, Func<decimal, decimal, decimal> calc)
         {
             for (int i = 0; i < splited.Length - 1; i++)
                 splited[0] = calc(decimal.Parse(splited[0]), decimal.Parse(splited[i + 1])).ToString();
+
+            return splited[0];
         }
 
         private void CalculateOperatorPriorities(string[] splited)
