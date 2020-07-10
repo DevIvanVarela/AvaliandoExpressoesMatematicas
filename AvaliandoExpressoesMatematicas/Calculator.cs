@@ -28,12 +28,12 @@ namespace AvaliandoExpressoesMatematicas
         private string CalculateParenthesesPriority(string input)
         {
             var match = _regex.Match(input);
-            if (match.Success)
-            {
-                var expressionToCalculate = match.Value.Replace("(", string.Empty).Replace(")", string.Empty);
-                var result = Calculate(expressionToCalculate);
-                input = input.Replace(match.Value, result);
-            }
+            if (!match.Success)
+                return input;
+
+            var expressionToCalculate = match.Value.Replace("(", string.Empty).Replace(")", string.Empty);
+            var result = Calculate(expressionToCalculate);
+            input = input.Replace(match.Value, result);
 
             if (_regex.Match(input).Success)
                 input = CalculateParenthesesPriority(input);
@@ -47,7 +47,7 @@ namespace AvaliandoExpressoesMatematicas
         {
             if (!input.Contains("/"))
                 return input;
-            
+
             var splited = input.Split("/");
             CalculateOperatorPriorities(splited);
             return CalculateValue(splited, decimal.Divide);
@@ -57,7 +57,7 @@ namespace AvaliandoExpressoesMatematicas
         {
             if (!input.Contains("*"))
                 return input;
-            
+
             var splited = input.Split("*");
             CalculateOperatorPriorities(splited);
             return CalculateValue(splited, decimal.Multiply);
@@ -67,7 +67,7 @@ namespace AvaliandoExpressoesMatematicas
         {
             if (!input.Contains("+"))
                 return input;
-            
+
             var splited = input.Split("+");
             CalculateOperatorPriorities(splited);
             return CalculateValue(splited, decimal.Add);
@@ -78,13 +78,12 @@ namespace AvaliandoExpressoesMatematicas
             var splited = input.Split("-");
             if (!input.Contains("-") || NegativeNumber(splited))
                 return input;
-            
+
             CalculateOperatorPriorities(splited);
             return CalculateValue(splited, decimal.Subtract);
         }
 
         private bool NegativeNumber(string[] splited) => splited.Any(x => string.IsNullOrWhiteSpace(x));
-
 
         private static string CalculateValue(string[] splited, Func<decimal, decimal, decimal> calc)
         {
