@@ -41,71 +41,57 @@ namespace AvaliandoExpressoesMatematicas
             return input;
         }
 
-        private static string ClearWhiteSpaces(string input)
-        {
-            return input.Replace(" ", string.Empty);
-        }
+        private static string ClearWhiteSpaces(string input) => input.Replace(" ", string.Empty);
 
         private string Divide(string input)
         {
-            if (input.Contains("/"))
-            {
-                var splited = input.Split("/");
-                CalculateOperatorPriorities(splited);
-                CalculateValue(splited, decimal.Divide);
+            if (!input.Contains("/"))
+                return input;
+            
+            var splited = input.Split("/");
+            CalculateOperatorPriorities(splited);
+            CalculateValue(splited, decimal.Divide);
 
-                return splited[0];
-            }
-
-            return input;
+            return splited[0];
         }
 
         private string Multiply(string input)
         {
-            if (input.Contains("*"))
-            {
-                var splited = input.Split("*");
-                CalculateOperatorPriorities(splited);
-                CalculateValue(splited, decimal.Multiply);
+            if (!input.Contains("*"))
+                return input;
+            
+            var splited = input.Split("*");
+            CalculateOperatorPriorities(splited);
+            CalculateValue(splited, decimal.Multiply);
 
-                return splited[0];
-            }
-
-            return input;
+            return splited[0];
         }
 
         private string Add(string input)
         {
-            if (input.Contains("+"))
-            {
-                var splited = input.Split("+");
-                CalculateOperatorPriorities(splited);
-                CalculateValue(splited, decimal.Add);
+            if (!input.Contains("+"))
+                return input;
+            
+            var splited = input.Split("+");
+            CalculateOperatorPriorities(splited);
+            CalculateValue(splited, decimal.Add);
 
-                return splited[0];
-            }
-
-            return input;
+            return splited[0];
         }
 
         private string Subtract(string input)
         {
-            if (input.Contains("-") && !NegativeNumber(input))
-            {
-                var splited = input.Split("-");
-                CalculateOperatorPriorities(splited);
-                CalculateValue(splited, decimal.Subtract);
+            if (!input.Contains("-") || NegativeNumber(input))
+                return input;
+            
+            var splited = input.Split("-");
+            CalculateOperatorPriorities(splited);
+            CalculateValue(splited, decimal.Subtract);
 
-                return splited[0];
-            }
-
-            return input;
+            return splited[0];
         }
 
-        private bool NegativeNumber(string input)
-        {
-            return input.Split("-").AsEnumerable().Any(x => string.IsNullOrWhiteSpace(x));
-        }
+        private bool NegativeNumber(string input) => input.Split("-").AsEnumerable().Any(x => string.IsNullOrWhiteSpace(x));
 
         private static void CalculateValue(string[] splited, Func<decimal, decimal, decimal> calc)
         {
