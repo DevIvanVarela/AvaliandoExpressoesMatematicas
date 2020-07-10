@@ -95,9 +95,6 @@ namespace AvaliandoExpressoesMatematicas
 
         private static void CalculateValue(string[] splited, Func<decimal, decimal, decimal> calc)
         {
-            if (splited.Any(x => x == string.Empty))
-                return;
-
             for (int i = 0; i < splited.Length - 1; i++)
                 splited[0] = calc(decimal.Parse(splited[0]), decimal.Parse(splited[i + 1])).ToString();
         }
